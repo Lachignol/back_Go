@@ -1,0 +1,4 @@
+PORT=****** // num de port 
+DB_URL="host=****** user=*****  dbname=***** port=******"
+SECRET=//clé secrete au choix pour l'auth 
+GO111MODULE=on
