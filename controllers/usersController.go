@@ -1,10 +1,12 @@
 package controllers
 
 import (
+	"log"
 	"net/http"
 	"os"
 	"time"
 
+	"github.com/backEnGO/helpers"
 	"github.com/backEnGO/initializers"
 	"github.com/backEnGO/models"
 	"github.com/gin-gonic/gin"
@@ -95,7 +97,14 @@ func SignUp(c *gin.Context) {
 		})
 		return
 	}
-	user := models.User{Name: body.Name, Email: body.Email, Password: string(hash)}
+	nameOfFile, err := helpers.UploadFile(c)
+	if err != nil {
+		log.Println(err)
+		c.JSON(http.StatusBadRequest, gin.H{
+			"messages": err,
+		})
+	}
+	user := models.User{Name: body.Name, Email: body.Email, Password: string(hash), Avatar: nameOfFile}
 	result := initializers.DB.Create(&user)
 	if result.Error != nil {
 		c.Status(400)
